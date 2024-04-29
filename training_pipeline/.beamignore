@@ -1,0 +1,14 @@
+model_cache/*
+results/*
+output/*
+logs/*
+.ruff_cache/*
+dataset/*
+__pycache__/**
+eda.ipynb
+.venv/*
+.vscode/*
+.ipynb_checkpoints/*
+.git
+tests/*
+README.md

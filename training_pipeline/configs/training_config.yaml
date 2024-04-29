@@ -1,0 +1,61 @@
+# training:
+#   per_device_train_batch_size: 64
+#   per_device_eval_batch_size: 64
+#   optim: adamw_torch
+#   logging_steps: 500
+#   learning_rate: 5.e-5
+#   num_train_epochs: 10
+#   lr_scheduler_type: constant
+#   evaluation_strategy: steps
+#   disable_tqdm: False
+#   report_to: comet_ml
+#   seed: 2024
+#   fp16: True
+#   load_best_model_at_end: True
+#   save_strategy: steps
+#   save_steps: 86
+#   eval_steps: 86
+#   weight_decay: 0.01
+#   #eval_accumulation_steps: 86
+#   save_total_limit: 1
+#   overwrite_output_dir: True
+#   do_eval: True
+#   do_train: True
+  # metric_for_best_model: eval_f1-score,
+  # greater_is_better: False
+  # eval_delay: 1
+  #logging_strategy: steps
+  #warmup_ratio: 0.03
+
+# model:
+#   id: distilbert/distilbert-base-uncased-finetuned-sst-2-english
+
+
+training:
+  per_device_train_batch_size: 64
+  per_device_eval_batch_size: 64
+  optim: adamw_torch
+  logging_steps: 1
+  learning_rate: 5.e-5
+  num_train_epochs: 3
+  lr_scheduler_type: linear
+  evaluation_strategy: epoch
+  disable_tqdm: False
+  report_to: comet_ml
+  seed: 2024
+  fp16: True
+  load_best_model_at_end: True
+  save_strategy: epoch
+  weight_decay: 0.01
+  save_total_limit: 1
+  overwrite_output_dir: True
+  do_eval: True
+  do_train: True
+  metric_for_best_model: "eval_f1-score"
+  greater_is_better: True
+  eval_delay: 1
+  logging_strategy: epoch
+  #warmup_steps: 10
+
+model:
+  id: distilbert/distilbert-base-uncased-finetuned-sst-2-english
