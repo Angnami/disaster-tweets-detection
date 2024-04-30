@@ -77,7 +77,6 @@ class BestModelToModelRegistryCallback(TrainerCallback):
         assert (
             checkpoint_dir.exists()
         ), f"Le repertoire du checkpoint {checkpoint_dir} n'existe pas."
-
         # Recupérer l'expérience obsolète à partir du contexte
         # global afin d'obtenir la clé d'API et l'ID de l'expérience.
         stale_experiment = comet_ml.get_global_experiment()
@@ -88,8 +87,11 @@ class BestModelToModelRegistryCallback(TrainerCallback):
             logger.info(
                 msg=f"Début de l'enregistrement du checkpoint du modèle @ {self.model_name}"
             )
-            experiment.log_model(self.model_name, str(checkpoint_dir))
-            experiment.register_model(model_name=self.model_name,registry_name="disater-tweets-detection")
+            # Charger uniquement les fichiers que l'on souhaite sauvegarder dans le registre de modèles
+            for file in constants.FILES_TO_SAVE_AFTER_TRAINING:
+                experiment.log_model(name=self.model_name, file_or_folder=f"{next(checkpoint_dir.glob(file))}")
+            # Sauvegarder le modèle dans le registre de modèles
+            experiment.register_model(model_name=self.model_name,registry_name="disaster-tweets-detection-distilbert")
             logger.info(
                 msg=f"Fin de l'enregistrement du checkpoint du modèle @ {self.model_name}"
             )

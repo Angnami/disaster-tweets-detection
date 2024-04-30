@@ -70,15 +70,14 @@ class TrainingConfig:
             fp16=training_config["fp16"],
             weight_decay=training_config["weight_decay"],
             load_best_model_at_end=training_config["load_best_model_at_end"],  
-            # eval_steps=training_config["eval_steps"],
-            # save_steps=training_config["save_steps"],
-            #eval_accumulation_steps=training_config["eval_accumulation_steps"],
             save_total_limit=training_config["save_total_limit"],
             metric_for_best_model=training_config["metric_for_best_model"],
             greater_is_better=training_config["greater_is_better"],
             eval_delay=training_config["eval_delay"],
-            logging_strategy=training_config["logging_strategy"],
-            #warmup_steps=training_config["warmup_steps"]          
+            logging_strategy=training_config["logging_strategy"],   
+            # eval_steps=training_config["eval_steps"],
+            # save_steps=training_config["save_steps"],
+            #eval_accumulation_steps=training_config["eval_accumulation_steps"],   
         )
 
 

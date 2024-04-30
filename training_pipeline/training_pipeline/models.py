@@ -43,12 +43,6 @@ def build_model(
                 model_id=ft_model_path_or_name,
                 cache_dir=cache_dir,
             )
-        ft_base_model = ft_model_path_or_name.split('/')[1].split(':')[0]
-        assert (
-            pretrained_model_name_or_path == ft_base_model
-        ), f"Modèle fine-tuné sur un modèle de base différent que celui demandé: \
-        {pretrained_model_name_or_path} != {ft_base_model}"
-
         logger.info(f"Chargement du modèle fine-tuné: {ft_model_path_or_name}")
         model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
     else:
@@ -91,7 +85,7 @@ def download_from_model_registry(model_id: str, cache_dir: Optional[Path]):
 
         api = API()
         model = api.get_model(workspace=workspace, model_name=model_name)
-        model.download(version=version, output_folder=output_folder, expand=True)
+        model.download(version=version, output_folder=output_folder)
     else:
         logger.info(msg=f"Le modèle {model_id} est déjà téléchargé à {output_folder}")
 

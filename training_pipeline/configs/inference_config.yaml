@@ -1,5 +1,5 @@
 ft_model:
-  id: angnami/distilbert-base-uncased-finetuned-sst-2-english:1.0.0 
+  id: angnami/disaster-tweets-detection-distilbert:1.0.0 
 model:
   id: distilbert/distilbert-base-uncased-finetuned-sst-2-english
 setup:

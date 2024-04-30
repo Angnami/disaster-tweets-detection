@@ -21,11 +21,10 @@
 #   overwrite_output_dir: True
 #   do_eval: True
 #   do_train: True
-  # metric_for_best_model: eval_f1-score,
-  # greater_is_better: False
-  # eval_delay: 1
-  #logging_strategy: steps
-  #warmup_ratio: 0.03
+#   metric_for_best_model: eval_f1-score,
+#   greater_is_better: False
+#   eval_delay: 1
+#   logging_strategy: steps
 
 # model:
 #   id: distilbert/distilbert-base-uncased-finetuned-sst-2-english
@@ -55,7 +54,6 @@ training:
   greater_is_better: True
   eval_delay: 1
   logging_strategy: epoch
-  #warmup_steps: 10
 
 model:
   id: distilbert/distilbert-base-uncased-finetuned-sst-2-english
