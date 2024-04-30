@@ -1,4 +1,4 @@
-import torch
+import os
 from transformers import (
     AutoModelForSequenceClassification,
     AutoTokenizer,
@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 from typing import Optional
 from comet_ml import API
-
+import torch
 from training_pipeline import constants
 
 logger = logging.getLogger(__name__)
@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 def build_model(
     pretrained_model_name_or_path: str = "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
     cache_dir: Optional[Path] = None,
+    ft_model_path_or_name:Optional[str]=None
 ) -> [AutoModelForSequenceClassification, AutoTokenizer]:
     """
     Cette fonction recupère un modèle HF.
@@ -26,18 +27,32 @@ def build_model(
 
     Args:
         pretrained_model_name_or_path(str): le nom ou le chemin du modèle pre-entrainé de HuggingFace
+        ft_model_path_or_name(str,optionnel):le nom ou le chemin du modèle fine-tuné
         cache-dir(Path):le repertoire de la cache où sera enregistré le modèle.
     Returns:
         [AutoModelForSequenceClassification, AutoTokenizer]:un tuple contenant le modèle construit et le tokenizer
     """
-    model = AutoModelForSequenceClassification.from_pretrained(
-        pretrained_model_name_or_path=pretrained_model_name_or_path,
-        trust_remote_code=False,
-        cache_dir=str(cache_dir) if cache_dir else None,
-        num_labels=constants.NUM_LABELS,
-        id2label=constants.ID2LABEL,
-        label2id=constants.LABEL2ID,
-    )
+    if ft_model_path_or_name:
+        is_model_name = not os.path.isdir(ft_model_path_or_name)
+        if is_model_name:
+            logger.info(
+                f"Téléchargement de {ft_model_path_or_name} à partir du registre de modèles de COMET ML."
+            )
+            ft_model_path_or_name = download_from_model_registry(
+                model_id=ft_model_path_or_name,
+                cache_dir=cache_dir,
+            )
+        logger.info(f"Chargement du modèle fine-tuné: {ft_model_path_or_name}")
+        model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
+    else:
+        model = AutoModelForSequenceClassification.from_pretrained(
+            pretrained_model_name_or_path=pretrained_model_name_or_path,
+            trust_remote_code=False,
+            cache_dir=str(cache_dir) if cache_dir else None,
+            num_labels=constants.NUM_LABELS,
+            id2label=constants.ID2LABEL,
+            label2id=constants.LABEL2ID,
+        )
 
     tokenizer = AutoTokenizer.from_pretrained(
         pretrained_model_name_or_path=pretrained_model_name_or_path,
@@ -69,7 +84,7 @@ def download_from_model_registry(model_id: str, cache_dir: Optional[Path]):
 
         api = API()
         model = api.get_model(workspace=workspace, model_name=model_name)
-        model.download(version=version, output_folder=output_folder, expand=True)
+        model.download(version=version, output_folder=output_folder)
     else:
         logger.info(msg=f"Le modèle {model_id} est déjà téléchargé à {output_folder}")
 
