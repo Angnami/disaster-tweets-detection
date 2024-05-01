@@ -1,20 +1,20 @@
 <div align="center">
     <h2>Disaster-tweets-detection </h2>
     <h1>Developper un modèle de Deep Learning pour la détection des tweets liés aux catastrophes naturelles</h1>
-    <i>Par <a href="https://github.com/Angnami/">Goudja Mahamat</a>
-</div>  
+    <i>Par <a href="https://github.com/Angnami/">Goudja Mahamat</a></i>
+</div>
 
 ## Description
 
 Ce projet est essentiellement basé sur [le travail](https://github.com/iusztinpaul/hands-on-llms) réalisé par <i> <a href="https://github.com/iusztinpaul">Paul Iusztin</a>, <a href="https://github.com/Paulescu">Pau Labarta Bajo</a> et <a href="https://github.com/Joywalker">Alexandru Razvant</a></i>. 
-Il correspond à la création d'un modèle de Deep Learning pour la détection des tweets liés aux catastrophes naturelles. Il s'agir concretement de choisir une rubrique d'actualité (politics par exemple) dans une liste proposée et poser une question pour laquelle le bot générera une réponse conhérente.
+Il correspond à la création d'un modèle de Deep Learning pour la détection des tweets liés aux catastrophes naturelles. 
 
 ## Démarche
 Le projet est réalisé en suivant deux étapes principales à savoir:
     - L'entrainement (Préparation des données incluse);
     - L'entrainement.
 
-# Pipeline d'entrainement/Fine-Tuning   
+## Pipeline d'entrainement/Fine-Tuning   
 
 Ce module permet de : 
 - Charger ces [données](https://www.kaggle.com/competitions/nlp-getting-started/data) de kaggle;
@@ -22,7 +22,7 @@ Ce module permet de :
 - Enregistrer les experiences dans l'outil de suivi des expériences de Comet ML;
 - Sauvegarder le meilleur modèle dans le registre de modèles de Comet ML .   
 
-# Pipeline d'inférence 
+## Pipeline d'inférence 
 
 Ce module permet de : 
 - Charger le modèle fine-tuné et sauvegardé dans le registre de modèle de Comet ML;
