@@ -82,7 +82,7 @@ make infer_beam
 make lint_check
 ```
 
-**Corriger** le code des problèmes de **linting** issues:
+**Corriger** le code des problèmes de **linting**:
 ```shell
 make lint_fix
 ```
