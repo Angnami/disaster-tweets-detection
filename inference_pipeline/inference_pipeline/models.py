@@ -10,62 +10,53 @@ from pathlib import Path
 from typing import Optional
 from comet_ml import API
 import torch
-from training_pipeline import constants
+from inference_pipeline import constants
 
 logger = logging.getLogger(__name__)
 
 
 def build_model(
+    ft_model_path_or_name: str,
     pretrained_model_name_or_path: str = "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
-    cache_dir: Optional[Path] = None,
-    ft_model_path_or_name:Optional[str]=None
+    model_cache_dir: Optional[Path] = None,
 ) -> [AutoModelForSequenceClassification, AutoTokenizer]:
     """
-    Cette fonction recupère un modèle HF.
-    1. Télécharge le modèle "distilbert/distilbert-base-uncased-finetuned-sst-2-english"
-    2. Charge et configure le tokenizer de "distilbert/distilbert-base-uncased-finetuned-sst-2-english"
+    Cette fonction recupère le modèle fine-tuné.
+    1. charge les artefacts du modèle s'ils sont disponibles en cache
+    2. télécharge le modèle à partir du registre de modèles de COMET ML s'il n'est pas disponible en cache
 
     Args:
-        pretrained_model_name_or_path(str): le nom ou le chemin du modèle pre-entrainé de HuggingFace
         ft_model_path_or_name(str,optionnel):le nom ou le chemin du modèle fine-tuné
         cache-dir(Path):le repertoire de la cache où sera enregistré le modèle.
     Returns:
         [AutoModelForSequenceClassification, AutoTokenizer]:un tuple contenant le modèle construit et le tokenizer
     """
-    if ft_model_path_or_name:
-        is_model_name = not os.path.isdir(ft_model_path_or_name)
-        if is_model_name:
-            logger.info(
-                f"Téléchargement de {ft_model_path_or_name} à partir du registre de modèles de COMET ML."
-            )
-            ft_model_path_or_name = download_from_model_registry(
-                model_id=ft_model_path_or_name,
-                cache_dir=cache_dir,
-            )
-        logger.info(f"Chargement du modèle fine-tuné: {ft_model_path_or_name}")
-        model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
-    else:
-        model = AutoModelForSequenceClassification.from_pretrained(
-            pretrained_model_name_or_path=pretrained_model_name_or_path,
-            trust_remote_code=False,
-            cache_dir=str(cache_dir) if cache_dir else None,
-            num_labels=constants.NUM_LABELS,
-            id2label=constants.ID2LABEL,
-            label2id=constants.LABEL2ID,
+    is_model_name = not os.path.isdir(ft_model_path_or_name)
+    if is_model_name:
+        logger.info(
+            f"Téléchargement de {ft_model_path_or_name} à partir du registre de modèles de COMET ML."
         )
+        ft_model_path_or_name = download_from_model_registry(
+            model_id=ft_model_path_or_name,
+            cache_dir=model_cache_dir,
+        )
+    logger.info(f"Chargement du modèle fine-tuné: {ft_model_path_or_name}")
+    model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
 
     tokenizer = AutoTokenizer.from_pretrained(
         pretrained_model_name_or_path=pretrained_model_name_or_path,
         padding="max_length",
         truncation=True,
-        cache_dir=str(cache_dir) if cache_dir else None,
+        cache_dir=str(model_cache_dir),
         model_max_length=512,
     )
 
     return model, tokenizer
 
 
-def download_from_model_registry(model_id: str, cache_dir: Optional[Path]):
+def download_from_model_registry(
+    model_id: str, cache_dir: Optional[Path] = None
+) -> Path:
     """
     Cette fonction télécharge un modèle à partir du registre de modèle de Comet ML.
     Args:
@@ -88,18 +79,11 @@ def download_from_model_registry(model_id: str, cache_dir: Optional[Path]):
     else:
         logger.info(msg=f"Le modèle {model_id} est déjà téléchargé à {output_folder}")
 
-    subdirs = [d for d in output_folder.iterdir() if d.is_dir()]
-    if len(subdirs) == 1:
-        model_dir = subdirs[0]
-    else:
-        raise RuntimeError(
-            f"Il doit avoir un seul repertoire dans le dossier du modèle. Vérifier le modèle téléchargé dans {output_folder}"
-        )
     logger.info(
-        msg=f"Le modèle {model_id} est téléchargé depuis le registre dans {model_dir}"
+        msg=f"Le modèle {model_id} est téléchargé depuis le registre dans {output_folder}"
     )
 
-    return model_dir
+    return output_folder
 
 
 def predict(
