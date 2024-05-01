@@ -10,9 +10,10 @@ Ce projet est essentiellement basé sur [le travail](https://github.com/iusztinp
 Il correspond à la création d'un modèle de Deep Learning pour la détection des tweets liés aux catastrophes naturelles. 
 
 # Démarche
-Le projet est réalisé en suivant deux étapes principales à savoir:
-    - L'entrainement (Préparation des données incluse);
-    - L'entrainement.
+Le projet est réalisé en suivant deux étapes principales à savoir:  
+
+- L'entrainement (Préparation des données incluse);
+- L'entrainement.
 
 ## Pipeline d'entrainement/Fine-Tuning   
 
