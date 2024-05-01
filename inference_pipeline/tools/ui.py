@@ -107,7 +107,7 @@ option = st.selectbox(
 
     
 if option == "mon propre tweet":
-    with st.form(key="My own tweet",clear_on_submit=True):
+    with st.form(key="My own tweet"):
         #Ecrire un tweet
         tweet = st.text_area(label="Veuillez écrire votre tweet",key="tweet")
         
