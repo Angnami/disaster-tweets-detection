@@ -45,18 +45,6 @@ cp .env.example .env
 ## 2.1. Entrainement  
 `Effectuer l'entrainement, suivre l'expérimentation et enregistrer le modèle dans Comet ML`
 
-### Local
-
-For debugging or to test that everything is working fine, run the following to train the model on a lower number of samples:
-```
-make dev_train_local
-```
-
-For training on the production configuration, run the following:
-```shell
-make train_local
-```
-
 ### Sur Beam
 
 Pour l'entrainement sur Beam, exécuter:
