@@ -4,12 +4,12 @@
     <i>Par <a href="https://github.com/Angnami/">Goudja Mahamat</a></i>
 </div>
 
-## Description
+# Description
 
 Ce projet est essentiellement basé sur [le travail](https://github.com/iusztinpaul/hands-on-llms) réalisé par <i> <a href="https://github.com/iusztinpaul">Paul Iusztin</a>, <a href="https://github.com/Paulescu">Pau Labarta Bajo</a> et <a href="https://github.com/Joywalker">Alexandru Razvant</a></i>. 
 Il correspond à la création d'un modèle de Deep Learning pour la détection des tweets liés aux catastrophes naturelles. 
 
-## Démarche
+# Démarche
 Le projet est réalisé en suivant deux étapes principales à savoir:
     - L'entrainement (Préparation des données incluse);
     - L'entrainement.
