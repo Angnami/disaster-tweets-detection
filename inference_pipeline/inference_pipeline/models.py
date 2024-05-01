@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 def build_model(
     ft_model_path_or_name: str,
-    pretrained_model_name_or_path: str = "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
+    #pretrained_model_name_or_path: str = "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
     model_cache_dir: Optional[Path] = None,
 ) -> [AutoModelForSequenceClassification, AutoTokenizer]:
     """
@@ -44,7 +44,7 @@ def build_model(
     model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
 
     tokenizer = AutoTokenizer.from_pretrained(
-        pretrained_model_name_or_path=pretrained_model_name_or_path,
+        pretrained_model_name_or_path=ft_model_path_or_name,
         padding="max_length",
         truncation=True,
         cache_dir=str(model_cache_dir),
