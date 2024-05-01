@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 from typing import Optional, Tuple
-import os 
+import os
 import comet_ml
 from datasets import Dataset
 from transformers import (
@@ -71,7 +71,7 @@ class BestModelToModelRegistryCallback(TrainerCallback):
             - checkpoint_dir(Path): le chemin du repertoire contenant le checkpoint du modèle.
 
         """
-        
+
         checkpoint_dir = checkpoint_dir.resolve()
 
         assert (
@@ -81,21 +81,30 @@ class BestModelToModelRegistryCallback(TrainerCallback):
         # global afin d'obtenir la clé d'API et l'ID de l'expérience.
         stale_experiment = comet_ml.get_global_experiment()
         # Reprendre l'expérience en utilisant sa clé API et son ID d'expérience
-        experiment = comet_ml.ExistingExperiment(previous_experiment=stale_experiment.get_key(), 
-                                                 api_key=os.environ["COMET_API_KEY"])
+        experiment = comet_ml.ExistingExperiment(
+            previous_experiment=stale_experiment.get_key(),
+            api_key=os.environ["COMET_API_KEY"],
+        )
         if experiment:
             logger.info(
                 msg=f"Début de l'enregistrement du checkpoint du modèle @ {self.model_name}"
             )
             # Charger uniquement les fichiers que l'on souhaite sauvegarder dans le registre de modèles
             for file in constants.FILES_TO_SAVE_AFTER_TRAINING:
-                experiment.log_model(name=self.model_name, file_or_folder=f"{next(checkpoint_dir.glob(file))}")
+                experiment.log_model(
+                    name=self.model_name,
+                    file_or_folder=f"{next(checkpoint_dir.glob(file))}",
+                )
             # Sauvegarder le modèle dans le registre de modèles
-            experiment.register_model(model_name=self.model_name,registry_name="disaster-tweets-detection-distilbert")
+            experiment.register_model(
+                model_name=self.model_name,
+                registry_name="disaster-tweets-detection-distilbert",
+            )
             logger.info(
                 msg=f"Fin de l'enregistrement du checkpoint du modèle @ {self.model_name}"
             )
             experiment.end()
+
 
 class TrainingAPI:
     """

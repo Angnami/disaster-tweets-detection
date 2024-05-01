@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def build_model(
     pretrained_model_name_or_path: str = "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
     cache_dir: Optional[Path] = None,
-    ft_model_path_or_name:Optional[str]=None
+    ft_model_path_or_name: Optional[str] = None,
 ) -> [AutoModelForSequenceClassification, AutoTokenizer]:
     """
     Cette fonction recupère un modèle HF.
@@ -44,7 +44,9 @@ def build_model(
                 cache_dir=cache_dir,
             )
         logger.info(f"Chargement du modèle fine-tuné: {ft_model_path_or_name}")
-        model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
+        model = AutoModelForSequenceClassification.from_pretrained(
+            ft_model_path_or_name
+        )
     else:
         model = AutoModelForSequenceClassification.from_pretrained(
             pretrained_model_name_or_path=pretrained_model_name_or_path,
@@ -66,7 +68,9 @@ def build_model(
     return model, tokenizer
 
 
-def download_from_model_registry(model_id: str, cache_dir: Optional[Path]):
+def download_from_model_registry(
+    model_id: str, cache_dir: Optional[Path] = None
+) -> Path:
     """
     Cette fonction télécharge un modèle à partir du registre de modèle de Comet ML.
     Args:
@@ -89,18 +93,11 @@ def download_from_model_registry(model_id: str, cache_dir: Optional[Path]):
     else:
         logger.info(msg=f"Le modèle {model_id} est déjà téléchargé à {output_folder}")
 
-    subdirs = [d for d in output_folder.iterdir() if d.is_dir()]
-    if len(subdirs) == 1:
-        model_dir = subdirs[0]
-    else:
-        raise RuntimeError(
-            f"Il doit avoir un seul repertoire dans le dossier du modèle. Vérifier le modèle téléchargé dans {output_folder}"
-        )
     logger.info(
-        msg=f"Le modèle {model_id} est téléchargé depuis le registre dans {model_dir}"
+        msg=f"Le modèle {model_id} est téléchargé depuis le registre dans {output_folder}"
     )
 
-    return model_dir
+    return output_folder
 
 
 def predict(

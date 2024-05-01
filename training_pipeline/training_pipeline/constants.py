@@ -22,4 +22,9 @@ ID2LABEL = {0: "non-disaster", 1: "disaster"}
 
 LABEL2ID = {"disaster": 1, "non-disaster": 0}
 
-FILES_TO_SAVE_AFTER_TRAINING = ["config.json","model.safetensors","tokenizer_config.json","vocab.txt"]
+FILES_TO_SAVE_AFTER_TRAINING = [
+    "config.json",
+    "model.safetensors",
+    "tokenizer_config.json",
+    "vocab.txt",
+]

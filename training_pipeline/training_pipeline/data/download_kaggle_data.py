@@ -13,10 +13,10 @@ zip_file_path = paths.ZIP_FILE_PATH
 def extract_data() -> None:
     """
     Cette fonction extrait le contenu du fichier zip dans le repertoire des données dataset_path.
-    Elle répartit aléatoirement les données entre l'entrainement et l'inférence.
+    Elle répartit aléatoirement les données d'entrainement entre l'entrainement et l'évaluation du modèle.
     """
     with ZipFile(zip_file_path, "r") as zip_file:
-        zip_file.extractall(members=["train.csv", "test.csv"], path=dataset_path)
+        zip_file.extractall(members=["train.csv"], path=dataset_path)
 
     train_df = pd.read_csv(dataset_path / "train.csv")
 

@@ -71,9 +71,9 @@ class DisasterTweetData:
 if __name__ == "__main__":
     data_path = DATA_PATH
     print(
-            len(
-                DisasterTweetData(
+        len(
+            DisasterTweetData(
                 data_path=data_path, scope=constants.Scope.TRAINING
             ).load_data()["train"]
-              )
         )
+    )
