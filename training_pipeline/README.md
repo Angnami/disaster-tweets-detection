@@ -68,7 +68,7 @@ make train_beam
 `Effectuer l'inférence`
 
 
-### sur Beam
+### Sur Beam
 
 Pour effectuer l'inférence, exécuter::
 ```shell
