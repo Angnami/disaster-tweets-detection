@@ -1,91 +1,66 @@
-import argparse
 import logging
-
+from pathlib import Path
 import streamlit as st
-
+import os
 import pandas as pd
 import numpy as np
-
 from inference_pipeline.data.utils import clean_tweet
+from inference_pipeline.constants import FINE_TUNED_MODEL_CHKPT
+from inference_pipeline import models
+import torch
+
+# Utilisation de GPU s'il existe
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 logger = logging.getLogger(__name__)
 
-# Fonction d'analyse des variables d'environnement
-def parseargs() -> argparse.Namespace:
-    """
-    Analyse les arguments de la ligne de commande pour faire la prédiction.
 
-    Returns:
-        argparse.Namespace: Un objet contenant les arguments analysés.
-    """
-
-    parser = argparse.ArgumentParser(description="Disaster Tweets Detector Model")
-
-    parser.add_argument(
-        "--env-file-path",
-        type=str,
-        default=".env",
-        help="Chemin du fichier des variables d'environnement",
-    )
-
-    parser.add_argument(
-        "--logging-config-path",
-        type=str,
-        default="logging.yaml",
-        help="Chemin du fichier de configuration",
-    )
-
-    parser.add_argument(
-        "--model-cache-dir",
-        type=str,
-        default="./model_cache",
-        help="Chemin de la cache du modèle",
-    )
-
-    return parser.parse_args()
-
-
-args = parseargs()
-
-
-# Récupération des artefacts
-def load_detector(
-    env_file_path: str = ".env",
+# Interface Streamlit
+# Configuration de la page 
+st.set_page_config(page_title="Disaster-Tweets-Dector",layout="wide", page_icon="random")
+# Titre
+st.title("Disaster Tweets Detection Application")
+# Récupération des variables d'environnement
+os.environ["COMET_API_KEY"] = st.secrets["comet_credentials"]["COMET_API_KEY"]
+os.environ["COMET_WORKSPACE"] = st.secrets["comet_credentials"]["COMET_WORKSPACE"]
+os.environ["COMET_PROJECT_NAME"] = st.secrets["comet_credentials"]["COMET_PROJECT_NAME"]
+# Fonction de récupération du modèle
+@st.cache_resource
+def load_model(
+    #env_file_path:str=".env",
     logging_config_path: str = "logging.yaml",
-    model_cache_dir: str = "./model_cache",
+    model_cache_dir: str = "./model_outputs",
+    ft_model_path_or_name: str = FINE_TUNED_MODEL_CHKPT
 ):
-    """Cette fonction charge les variables d'environnement, la configuration des loggings et définit le détecteur.
-    Args:
-        env_file_path: Fichier des variables d'environnement
-        logging_config_path: Fichier de configuration des loggings
-        model_cache_dir: l'addresse de cache du modèle
-    """
-    from inference_pipeline import initialize
-    # Charger les variables d'environnement et la configuration des loggings
-    initialize(logging_config_path=logging_config_path, env_file_path=env_file_path)
-    
+    model_cache_dir = Path(model_cache_dir)
+    from inference_pipeline import initialize_logger
+    # Charger la configuration des loggings
+    try:
+        initialize_logger(config_path=logging_config_path)
+    except FileNotFoundError:
+        logger.warning(
+            msg=f"Fichier de configuration non trouvé à {logging_config_path}. Définition du niveau de logging à INFO"
+        )
+        logging.basicConfig(level=logging.INFO)
     from inference_pipeline import utils
-    from inference_pipeline.disaster_tweet_detector import DisasterTweetsDetector
 
+    # Vérification des ressources disponibles
     logger.info("#" * 100)
     utils.log_available_gpu_memory()
     utils.log_available_ram()
     logger.info("#" * 100)
     # Définition du détecteur
-    detector = DisasterTweetsDetector(model_cache_dir=None)
+    model, tokenizer = models.build_model(
+            model_cache_dir=model_cache_dir, ft_model_path_or_name=ft_model_path_or_name
+        )
+    return model, tokenizer
+# Fonction de prédiction
+def make_prediction(tweet:str):
+    
+    return models.predict(model=model, tokenizer=tokenizer, text=tweet, device=device)
 
-    return detector
-
-# Définition du détecteur
-detector = load_detector(
-    env_file_path=args.env_file_path, logging_config_path=args.logging_config_path
-)
-
-# Interface Streamlit
-# Configuration de la page
-st.set_page_config(page_title="Disaster-Tweets-Dector",layout="wide", page_icon="random")
-# Titre
-st.title("Disaster Tweets Detection Application")
+# Chargement du modèle
+model, tokenizer = load_model()
 
 # st.subheader("@Goudja")
 
@@ -117,9 +92,8 @@ if option == "mon propre tweet":
             
             # Afficher le tweet néttoyé
             st.text(preprocessed_tweet, help="Version pré-traitée de votre tweet")
-            
             # Faire la prédiction sur le tweet
-            prediction = detector.predict(preprocessed_tweet)
+            prediction = make_prediction(preprocessed_tweet)
             
             # Afficher les résultats de la prédiction
             st.write(prediction)
@@ -139,7 +113,7 @@ else:
     st.text(preprocessed_tweet,help="Version pré-traitée de ce tweet")
 
     # Faire la prédiction de la classe du tweet
-    prediction = detector.predict(preprocessed_tweet)
+    prediction = make_prediction(preprocessed_tweet)
     # Afficher les résultats de la prédiction
     st.write(prediction)
     

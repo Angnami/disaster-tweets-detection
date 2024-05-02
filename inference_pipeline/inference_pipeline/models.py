@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 def build_model(
     ft_model_path_or_name: str,
-    #pretrained_model_name_or_path: str = "distilbert/distilbert-base-uncased-finetuned-sst-2-english",
     model_cache_dir: Optional[Path] = None,
 ) -> [AutoModelForSequenceClassification, AutoTokenizer]:
     """
@@ -40,7 +39,7 @@ def build_model(
             model_id=ft_model_path_or_name,
             cache_dir=model_cache_dir,
         )
-    logger.info(f"Chargement du modèle fine-tuné: {ft_model_path_or_name}")
+    logger.info(f"Chargement du modèle fine-tuné dans: {ft_model_path_or_name}")
     model = AutoModelForSequenceClassification.from_pretrained(ft_model_path_or_name)
 
     tokenizer = AutoTokenizer.from_pretrained(
@@ -66,8 +65,9 @@ def download_from_model_registry(
         - Le chemin du modèle téléchargé
     """
     if cache_dir is None:
-        cache_dir = constants.CACHE_DIR
-    output_folder = cache_dir / "models" / model_id
+        output_folder = constants.CACHE_DIR / "models" / model_id
+    else:
+        output_folder = Path(cache_dir)
     already_downloaded = output_folder.exists()
     if not already_downloaded:
         workspace, model_id = model_id.split("/")
@@ -121,6 +121,6 @@ def predict(
 
     return {
         "probs": probs.squeeze(axis=0).tolist(),
-        "idx": pred_idx,
+        "idx": int(pred_idx),
         "label": pred_label,
     }
