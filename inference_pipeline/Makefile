@@ -1,10 +1,9 @@
 .PHONY: install add  add_dev install_dev export_requirements deploy_beam run run_ui lint_check lint_fix
 
 # ==== Install ====
-
 install:
 	@echo "Installation de l'environnement..."
-	
+	curl -sSL https://install.python-poetry.org | python3 -
 	poetry env use $(shell which python3.10) && \
 	PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry install 
 

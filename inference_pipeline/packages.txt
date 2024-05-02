@@ -1,0 +1,3 @@
+build-essential
+python-poetry
+make
