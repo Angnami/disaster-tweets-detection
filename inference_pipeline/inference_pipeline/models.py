@@ -67,7 +67,7 @@ def download_from_model_registry(
     if cache_dir is None:
         output_folder = constants.CACHE_DIR / "models" / model_id
     else:
-        output_folder = Path(cache_dir)
+        output_folder = Path(cache_dir)/model_id
     already_downloaded = output_folder.exists()
     if not already_downloaded:
         workspace, model_id = model_id.split("/")
