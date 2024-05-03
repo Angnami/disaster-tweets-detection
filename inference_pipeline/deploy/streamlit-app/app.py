@@ -45,9 +45,10 @@ model, tokenizer = load_model()
 # st.subheader("@Goudja")
 
 # Fonction pour télécharger des exemples de tweets et les mettre en cache
+data_path = Path(("./dataset/test.csv"))
 @st.cache_data
 def load_data():
-    df = pd.read_csv(filepath_or_buffer="/dataset/test.csv", usecols=["text"])
+    df = pd.read_csv(filepath_or_buffer=data_path, usecols=["text"])
     return df
 # Les données
 data = load_data()
@@ -59,7 +60,6 @@ option = st.selectbox(
     index=1,
     key="selection"
 )
-
     
 if option == "mon propre tweet":
     with st.form(key="My own tweet"):
