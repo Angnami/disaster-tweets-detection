@@ -46,11 +46,11 @@ model, tokenizer = load_model()
 
 # Fonction pour télécharger des exemples de tweets et les mettre en cache
 
-# @st.cache_data
-# def load_data():
-#     return pd.read_csv("tweets.csv", usecols=["text"])
-# # Les données
-# data = load_data()
+@st.cache_data
+def load_data():
+    return pd.read_csv("./tweets.csv", usecols=["text"])
+# Les données
+data = load_data()
 
 # Choisir l'option d'usage du modèle
 option = st.selectbox(
@@ -79,11 +79,11 @@ if option == "mon propre tweet":
         st.form_submit_button(label="Afficher les résultats")
 else:
     # Choisir un nombre aléatoire
-    # random_id = np.random.randint(low=0, high=data.shape[0])
+    random_id = np.random.randint(low=0, high=data.shape[0])
 
-    # # Récupérer le tweet correspondant à l'index tiré aléatoirement
-    # tweet = data.iloc[random_id].values.tolist()[0]
-    tweet = "@EskSF there are always casualties when doing the right thing especially if it's going to cost your boss money."
+    # Récupérer le tweet correspondant à l'index tiré aléatoirement
+    tweet = data.iloc[random_id].values.tolist()[0]
+    #tweet = "@EskSF there are always casualties when doing the right thing especially if it's going to cost your boss money."
     # Néttoyer le tweet
     preprocessed_tweet = clean_tweet(tweet=str(tweet))
     # Afficher le tweet
