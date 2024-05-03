@@ -1,0 +1,13 @@
+.venv
+.env
+__pycache__ 
+.vscode
+tests.py
+None
+.ruff_cache
+logs
+None
+.streamlit
+model_outputs
+model
+example.Dockerfile
