@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 import streamlit as st
 import os
@@ -12,7 +11,6 @@ import torch
 # Utilisation de GPU s'il existe
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-logger = logging.getLogger(__name__)
 
 
 # Interface Streamlit
@@ -27,28 +25,10 @@ os.environ["COMET_PROJECT_NAME"] = st.secrets["comet_credentials"]["COMET_PROJEC
 # Fonction de récupération du modèle
 @st.cache_resource
 def load_model(
-    #env_file_path:str=".env",
-    logging_config_path: str = "logging.yaml",
     model_cache_dir: str = "./model_outputs",
     ft_model_path_or_name: str = FINE_TUNED_MODEL_CHKPT
 ):
     model_cache_dir = Path(model_cache_dir)
-    from inference_pipeline import initialize_logger
-    # Charger la configuration des loggings
-    try:
-        initialize_logger(config_path=logging_config_path)
-    except FileNotFoundError:
-        logger.warning(
-            msg=f"Fichier de configuration non trouvé à {logging_config_path}. Définition du niveau de logging à INFO"
-        )
-        logging.basicConfig(level=logging.INFO)
-    from inference_pipeline import utils
-
-    # Vérification des ressources disponibles
-    logger.info("#" * 100)
-    utils.log_available_gpu_memory()
-    utils.log_available_ram()
-    logger.info("#" * 100)
     # Définition du détecteur
     model, tokenizer = models.build_model(
             model_cache_dir=model_cache_dir, ft_model_path_or_name=ft_model_path_or_name

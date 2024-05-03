@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Optional
 from comet_ml import API
 import torch
-from inference_pipeline import constants
+import constants
 
 logger = logging.getLogger(__name__)
 

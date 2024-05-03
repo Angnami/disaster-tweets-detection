@@ -7,3 +7,4 @@ accelerate == 0.28.0
 datasets == 2.18.0
 scikit-learn == 1.4.1.post1
 streamlit == 1.33.0
+comet-ml == 3.39.0
