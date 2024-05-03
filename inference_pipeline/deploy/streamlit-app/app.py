@@ -48,8 +48,7 @@ model, tokenizer = load_model()
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("test.csv", usecols=["text"])
-    return df
+    return pd.read_csv("test.csv", usecols=["text"])
 # Les données
 data = load_data()
 
