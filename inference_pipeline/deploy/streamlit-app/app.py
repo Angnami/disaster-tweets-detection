@@ -47,7 +47,7 @@ model, tokenizer = load_model()
 # Fonction pour télécharger des exemples de tweets et les mettre en cache
 @st.cache_data
 def load_data():
-    df = pd.read_csv(filepath_or_buffer="./dataset/test.csv", usecols=["text"])
+    df = pd.read_csv(filepath_or_buffer="/dataset/test.csv", usecols=["text"])
     return df
 # Les données
 data = load_data()
