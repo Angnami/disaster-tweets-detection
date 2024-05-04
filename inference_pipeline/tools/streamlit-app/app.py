@@ -59,6 +59,8 @@ option = st.selectbox(
     index=1,
     key="selection"
 )
+#Définir différents onglets pour le tweet brut,sa version néttoyée et la prédiction
+raw_tweet_tab, preprocessed_tweet_tab, predictions_tab = st.tabs(tabs=["tweet brut","tweet traité","prediction"])
     
 if option == "mon propre tweet":
     with st.form(key="My own tweet"):
@@ -70,12 +72,14 @@ if option == "mon propre tweet":
             preprocessed_tweet = clean_tweet(tweet=tweet)
             
             # Afficher le tweet néttoyé
-            st.text(preprocessed_tweet, help="Version pré-traitée de votre tweet")
+            with predictions_tab: 
+                st.text(preprocessed_tweet, help="Version pré-traitée de votre tweet")
             # Faire la prédiction sur le tweet
             prediction = make_prediction(preprocessed_tweet)
             
             # Afficher les résultats de la prédiction
-            st.write(prediction)
+            with predictions_tab:
+                st.write(prediction)
         st.form_submit_button(label="Afficher les résultats")
 else:
     # Choisir un nombre aléatoire
@@ -87,14 +91,17 @@ else:
     # Néttoyer le tweet
     preprocessed_tweet = clean_tweet(tweet=str(tweet))
     # Afficher le tweet
-    st.text(tweet,help="Exemple de tweet choisi aléatoirement")
+    with raw_tweet_tab: 
+        st.text(tweet,help="Exemple de tweet choisi aléatoirement")
     #Afficher la version nétoyée du tweet
-    st.text(preprocessed_tweet,help="Version pré-traitée de ce tweet")
+    with preprocessed_tweet_tab:
+        st.text(preprocessed_tweet,help="Version pré-traitée de ce tweet")
 
     # Faire la prédiction de la classe du tweet
     prediction = make_prediction(preprocessed_tweet)
     # Afficher les résultats de la prédiction
-    st.write(prediction)
+    with predictions_tab:
+        st.write(prediction)
     
     # Pour afficher un autre exemple de tweet
     get_random_tweet = st.button(label="Afficher un autre tweet")
