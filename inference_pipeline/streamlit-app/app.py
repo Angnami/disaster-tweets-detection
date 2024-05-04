@@ -20,7 +20,7 @@ st.set_page_config(page_title="Disaster-Tweets-Dector",layout="wide", page_icon=
 st.title("Disaster Tweets Detection Application")
 # Récupération des variables d'environnement
 os.environ["COMET_API_KEY"] = st.secrets["comet_credentials"]["COMET_API_KEY"]
-os.environ["COMET_WORKSPACE"] = "angnami"
+os.environ["COMET_WORKSPACE"] = st.secrets["comet_credentials"]["COMET_WORKSPACE"]
 os.environ["COMET_PROJECT_NAME"] = st.secrets["comet_credentials"]["COMET_PROJECT_NAME"]
 # Fonction de récupération du modèle
 @st.cache_resource
@@ -45,10 +45,10 @@ model, tokenizer = load_model()
 # st.subheader("@Goudja")
 
 # Fonction pour télécharger des exemples de tweets et les mettre en cache
-data_folder = Path("./data").resolve()
+
 @st.cache_data
 def load_data():
-    return pd.read_csv(data_folder/"tweets.csv", usecols=["text"])
+    return pd.read_csv("./data/tweets.csv", usecols=["text"])
 # Les données
 data = load_data()
 
