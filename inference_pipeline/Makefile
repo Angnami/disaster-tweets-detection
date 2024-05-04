@@ -47,7 +47,7 @@ run:
 		--tweet "Heard about #earthquake is different cities, stay safe everyone." 
 
 run_ui:
-	streamlit run ./tools/ui.py
+	cd tools/streamlit-app/ && streamlit run app.py
 
 # === PEP8 ===
 # S'assurer d'installer les dépendances dev préalablement #
