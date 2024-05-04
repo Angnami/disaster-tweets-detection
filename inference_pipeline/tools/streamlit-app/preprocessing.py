@@ -1,9 +1,4 @@
 import regex as re
-import yaml
-from pathlib import Path
-import json
-from typing import List, Union
-
 from unstructured.cleaners.core import (
     clean,
     clean_non_ascii_chars,
@@ -61,31 +56,3 @@ def clean_tweet(tweet: str) -> str:
     tweet = re.sub(r"[_]+", "", tweet)
 
     return tweet
-
-
-def load_yaml(path: Path) -> dict:
-    """Cette fonction recupère un fichier YAML et renvoie son contenu sous
-    forme de dictionnaire.
-    Args:
-        path(Path): le chemin de récupération du fichier YAML.
-    Returns:
-        dict: le contenu du fichier YAML sous forme de dictionnaire.
-    """
-    with path.open("r") as file:
-        config = yaml.safe_load(file)
-
-    return config
-
-
-def write_json(data: Union[dict, List[dict]], path: Path) -> None:
-    """
-    Enregistre un dictionnaire ou une liste de dictionnaires en  fichier json.
-    Args:
-        - data(Union[dict, List[dict]]): les données à enregistrer.
-        - path(Path): le chemin du fichier à enregister.
-    Returns:
-        - None
-    """
-
-    with path.open("w") as f:
-        json.dump(obj=data, fp=f, indent=4, default=str)
