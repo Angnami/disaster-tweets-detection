@@ -9,5 +9,4 @@ logs
 None
 .streamlit
 model_outputs
-model
 example.Dockerfile
