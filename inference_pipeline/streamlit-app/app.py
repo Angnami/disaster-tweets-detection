@@ -45,10 +45,10 @@ model, tokenizer = load_model()
 # st.subheader("@Goudja")
 
 # Fonction pour télécharger des exemples de tweets et les mettre en cache
-data_path = Path("./data/tweets.csv").resolve()
+data_folder = Path("./data").resolve()
 @st.cache_data
 def load_data():
-    return pd.read_csv(data_path, usecols=["text"])
+    return pd.read_csv(data_folder/"tweets.csv", usecols=["text"])
 # Les données
 data = load_data()
 
