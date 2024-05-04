@@ -59,30 +59,30 @@ option = st.selectbox(
     index=1,
     key="selection"
 )
-#Définir différents onglets pour le tweet brut,sa version néttoyée et la prédiction
-raw_tweet_tab, preprocessed_tweet_tab, predictions_tab = st.tabs(tabs=["tweet brut","tweet traité","prediction"])
     
 if option == "mon propre tweet":
-    with st.form(key="My own tweet"):
-        #Ecrire un tweet
-        tweet = st.text_area(label="Veuillez écrire votre tweet",key="tweet")
+    #Ecrire un tweet
+    tweet = st.text_area(label="Veuillez écrire votre tweet",key="tweet")
+    if tweet:
+        # Nettoyer le tweet écrit
+        preprocessed_tweet = clean_tweet(tweet=tweet)
+        #Définir différents onglets pour le tweet brut,sa version néttoyée et la prédiction
+        raw_tweet_tab,preprocessed_tweet_tab, predictions_tab = st.tabs(tabs=["tweet brut","tweet traité","prédiction"])
+        with raw_tweet_tab: 
+            st.text(tweet,help="La version originale de votre tweet")
+        # Afficher le tweet néttoyé
+        with preprocessed_tweet_tab: 
+            st.text(preprocessed_tweet, help="Version pré-traitée de votre tweet")
+        # Faire la prédiction sur le tweet
+        prediction = make_prediction(preprocessed_tweet)
         
-        if tweet:
-            # Nettoyer le tweet écrit
-            preprocessed_tweet = clean_tweet(tweet=tweet)
-            
-            # Afficher le tweet néttoyé
-            with predictions_tab: 
-                st.text(preprocessed_tweet, help="Version pré-traitée de votre tweet")
-            # Faire la prédiction sur le tweet
-            prediction = make_prediction(preprocessed_tweet)
-            
-            # Afficher les résultats de la prédiction
-            with predictions_tab:
-                st.write(prediction)
-        st.form_submit_button(label="Afficher les résultats")
+        # Afficher les résultats de la prédiction
+        with predictions_tab:
+            st.write(prediction)
 else:
     # Choisir un nombre aléatoire
+    #Définir différents onglets pour le tweet brut,sa version néttoyée et la prédiction
+    raw_tweet_tab, preprocessed_tweet_tab, predictions_tab = st.tabs(tabs=["tweet brut","tweet traité","prédiction"])
     random_id = np.random.randint(low=0, high=data.shape[0])
 
     # Récupérer le tweet correspondant à l'index tiré aléatoirement
