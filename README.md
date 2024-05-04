@@ -6,7 +6,7 @@
 
 # Description
 
-Ce projet est essentiellement basé sur [le travail](https://github.com/iusztinpaul/hands-on-llms) réalisé par <i> <a href="https://github.com/iusztinpaul">Paul Iusztin</a>, <a href="https://github.com/Paulescu">Pau Labarta Bajo</a> et <a href="https://github.com/Joywalker">Alexandru Razvant</a></i>. 
+Ce projet est inspiré du [le travail](https://github.com/iusztinpaul/hands-on-llms) réalisé par <i> <a href="https://github.com/iusztinpaul">Paul Iusztin</a>, <a href="https://github.com/Paulescu">Pau Labarta Bajo</a> et <a href="https://github.com/Joywalker">Alexandru Razvant</a></i>. 
 Il correspond à la création d'un modèle de Deep Learning pour la détection des tweets liés aux catastrophes naturelles à partir des données de kaggle. 
 
 # Démarche
