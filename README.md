@@ -19,7 +19,7 @@ Le projet est réalisé en suivant deux étapes principales à savoir:
 
 Ce module permet de : 
 - Charger ces [données](https://www.kaggle.com/competitions/nlp-getting-started/data) de kaggle;
-- Fine-tuner un [modèle](https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english) de base HugginFace;
+- Fine-tuner un [modèle](https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english) de base de HugginFace;
 - Enregistrer les expériences dans l'outil de suivi des expériences de Comet ML;
 - Sauvegarder le meilleur modèle dans le registre de modèles de Comet ML .   
 
