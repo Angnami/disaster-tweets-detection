@@ -20,13 +20,13 @@ Le projet est réalisé en suivant deux étapes principales à savoir:
 Ce module permet de : 
 - Charger ces [données](https://www.kaggle.com/competitions/nlp-getting-started/data) de kaggle;
 - Fine-tuner un [modèle](https://huggingface.co/distilbert/distilbert-base-uncased-finetuned-sst-2-english) de base HugginFace;
-- Enregistrer les experiences dans l'outil de suivi des expériences de Comet ML;
+- Enregistrer les expériences dans l'outil de suivi des expériences de Comet ML;
 - Sauvegarder le meilleur modèle dans le registre de modèles de Comet ML .   
 
 ## Pipeline d'inférence 
 
 Ce module permet de : 
 - Charger le modèle fine-tuné et sauvegardé dans le registre de modèle de Comet ML;
-- Prendre un tweet (saisi par l'utilsateur ou choisi aléatoiré dans les données non connues par le modèle lors de son entrainement),  le pré-traiter;
+- Prendre un tweet (saisi par l'utilsateur ou choisi aléatoirement dans les données non connues par le modèle lors de son entrainement),  le prétraiter;
 - Afficher les résultats de la prédiction en disant si le tweet correspond à une catastrophe naturelle ou pas;
 - Créer une interface Streamlit permettant aux utilisateurs d'interagir avec le modèle.   
